@@ -2,7 +2,6 @@ services:
 
   postgres:
     image: postgres:15
-
     container_name: postgres_nogtech
 
     environment:
@@ -18,7 +17,6 @@ services:
 
   airflow:
     image: apache/airflow:2.9.1
-
     container_name: airflow_nogtech
 
     depends_on:
@@ -29,6 +27,7 @@ services:
 
     environment:
       AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres:5432/nogtech
 
     volumes:
       - ./airflow/dags:/opt/airflow/dags
@@ -36,7 +35,7 @@ services:
       - ./data:/opt/airflow/data
       - ./cache:/opt/airflow/cache
 
-    command: standalone
+    command: bash -c "airflow db migrate && airflow standalone"
 
 volumes:
   postgres_data:
