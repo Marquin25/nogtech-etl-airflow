@@ -1,0 +1,42 @@
+services:
+
+  postgres:
+    image: postgres:15
+
+    container_name: postgres_nogtech
+
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: nogtech
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  airflow:
+    image: apache/airflow:2.9.1
+
+    container_name: airflow_nogtech
+
+    depends_on:
+      - postgres
+
+    ports:
+      - "8080:8080"
+
+    environment:
+      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./airflow/scripts:/opt/airflow/scripts
+      - ./data:/opt/airflow/data
+      - ./cache:/opt/airflow/cache
+
+    command: standalone
+
+volumes:
+  postgres_data:
