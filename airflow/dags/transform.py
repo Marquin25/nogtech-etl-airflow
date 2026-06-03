@@ -16,10 +16,23 @@ def buscar_feriados(ano):
 
     url = f"https://brasilapi.com.br/api/feriados/v1/{ano}"
 
-    resposta = requests.get(url)
+    for tentativa in range(3):
 
-    if resposta.status_code == 200:
-        return {feriado["date"] for feriado in resposta.json()}
+        try:
+
+            resposta = requests.get(
+                url,
+                timeout=5
+            )
+
+            if resposta.status_code == 200:
+                return {
+                    feriado["date"]
+                    for feriado in resposta.json()
+                }
+
+        except Exception:
+            pass
 
     return set()
 
@@ -33,29 +46,31 @@ def buscar_cep(cep, cache):
 
     url = f"https://brasilapi.com.br/api/cep/v2/{cep}"
 
-    try:
+    for tentativa in range(3):
 
-        resposta = requests.get(
-            url,
-            timeout=5
-        )
+        try:
 
-        if resposta.status_code == 200:
+            resposta = requests.get(
+                url,
+                timeout=5
+            )
 
-            dados = resposta.json()
+            if resposta.status_code == 200:
 
-            resultado = {
-                "cidade": dados.get("city"),
-                "uf": dados.get("state"),
-                "bairro": dados.get("neighborhood")
-            }
+                dados = resposta.json()
 
-            cache[cep] = resultado
+                resultado = {
+                    "cidade": dados.get("city"),
+                    "uf": dados.get("state"),
+                    "bairro": dados.get("neighborhood")
+                }
 
-            return resultado
+                cache[cep] = resultado
 
-    except Exception:
-        pass
+                return resultado
+
+        except Exception:
+            pass
 
     return {
         "cidade": None,
