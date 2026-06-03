@@ -1,12 +1,28 @@
 import pandas as pd
 import re
+import requests
+
 
 def formatar_cpf(cpf):
     cpf = re.sub(r"\D", "", str(cpf))
     return f"{cpf[:3]}.{cpf[3:6]}.{cpf[6:9]}-{cpf[9:]}"
 
+
 def anonimizar_cpf(cpf):
     return f"***.{cpf[4:7]}.{cpf[8:11]}-**"
+
+
+def buscar_feriados(ano):
+
+    url = f"https://brasilapi.com.br/api/feriados/v1/{ano}"
+
+    resposta = requests.get(url)
+
+    if resposta.status_code == 200:
+        return {feriado["date"] for feriado in resposta.json()}
+
+    return set()
+
 
 def transform():
 
@@ -35,6 +51,21 @@ def transform():
         engajamento,
         on=["cpf_aluno", "mes_referencia"],
         how="left"
+    )
+
+    # BrasilAPI
+    feriados_2024 = buscar_feriados(2024)
+
+    resultado["data_transacao"] = pd.to_datetime(
+        resultado["data_transacao"],
+        format="mixed",
+        dayfirst=True
+    )
+
+    resultado["venda_em_feriado"] = (
+        resultado["data_transacao"]
+        .dt.strftime("%Y-%m-%d")
+        .isin(feriados_2024)
     )
 
     # LGPD
