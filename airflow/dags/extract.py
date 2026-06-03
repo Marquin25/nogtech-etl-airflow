@@ -5,7 +5,7 @@ def extract():
     transacoes = pd.read_csv(
         "/opt/airflow/data/transacoes_nogtech.csv",
         sep=";",
-        encoding="latin1"
+        encoding="utf-8-sig"
     )
 
     engajamento = pd.read_json(

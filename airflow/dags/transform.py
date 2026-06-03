@@ -13,7 +13,7 @@ def transform():
     transacoes = pd.read_csv(
         "/opt/airflow/data/transacoes_nogtech.csv",
         sep=";",
-        encoding="latin1"
+        encoding="utf-8-sig"
     )
 
     engajamento = pd.read_json(
@@ -32,7 +32,9 @@ def transform():
 
     transacoes["mes_referencia"] = (
         pd.to_datetime(
-            transacoes["data_transacao"]
+            transacoes["data_transacao"],
+            format="mixed",
+            dayfirst=True
         ).dt.strftime("%Y-%m")
     )
 
