@@ -1,5 +1,5 @@
 import pandas as pd
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 
 def load():
 
@@ -10,12 +10,16 @@ def load():
     )
 
     with engine.connect() as conn:
-        if not df.empty:
+        tabela_existe = conn.execute(text(
+            "SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = 'fato_vendas')"
+        )).scalar()
+
+        if tabela_existe and not df.empty:
             datas = df["data_transacao"].unique().tolist()
             datas_str = ", ".join([f"'{d}'" for d in datas])
-            conn.execute(
+            conn.execute(text(
                 f"DELETE FROM fato_vendas WHERE data_transacao IN ({datas_str})"
-            )
+            ))
             conn.commit()
 
     df.to_sql(
