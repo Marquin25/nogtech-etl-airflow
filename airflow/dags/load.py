@@ -1,4 +1,4 @@
-import pandas as pd
+]import pandas as pd
 from sqlalchemy import create_engine
 
 def load():
@@ -9,11 +9,22 @@ def load():
         "postgresql+psycopg2://airflow:airflow@postgres:5432/nogtech"
     )
 
+    # Idempotência: apaga registros do mesmo lote antes de inserir
+    # Estratégia: particionamento por data_transacao com overwrite
+    with engine.connect() as conn:
+        if not df.empty:
+            datas = df["data_transacao"].unique().tolist()
+            datas_str = ", ".join([f"'{d}'" for d in datas])
+            conn.execute(
+                f"DELETE FROM fato_vendas WHERE data_transacao IN ({datas_str})"
+            )
+            conn.commit()
+
     df.to_sql(
-        "alunos_tratados",
+        "fato_vendas",
         engine,
-        if_exists="replace",
+        if_exists="append",
         index=False
     )
 
-    print("Dados carregados com sucesso!")
+    print(f"Carga concluída: {len(df)} registros gravados em fato_vendas")
