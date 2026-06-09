@@ -16,21 +16,24 @@ Pipeline de ETL para consolidar o relatório diário de vendas da NogTech, cruza
 
 ## Estrutura do projeto
 
+## Estrutura do projeto
+
+```
 nogtech-etl-airflow/
 ├── airflow/
 │   ├── dags/
-│   │   ├── nogtech_etl.py   # DAG principal
-│   │   ├── extract.py       # Extração
-│   │   ├── transform.py     # Transformação
-│   │   └── load.py          # Carga
+│   │   ├── nogtech_etl.py
+│   │   ├── extract.py
+│   │   ├── transform.py
+│   │   └── load.py
 │   ├── scripts/
 │   └── requirements.txt
 ├── data/
 │   ├── transacoes_nogtech.csv
 │   └── engajamento_alunos.json
 └── docker-compose.yml
+```
 
----
 
 ## Como rodar
 
