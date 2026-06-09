@@ -10,10 +10,10 @@ def load():
     )
 
     df.to_sql(
-        "alunos_tratados",
+        "fato_vendas",
         engine,
         if_exists="replace",
         index=False
     )
 
-    print("Dados carregados com sucesso!")
+    print(f"Carga concluída: {len(df)} registros gravados em fato_vendas")
