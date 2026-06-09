@@ -16,7 +16,6 @@ Pipeline de ETL para consolidar o relatório diário de vendas da NogTech, cruza
 
 ## Estrutura do projeto
 
-## Estrutura do projeto
 
 ```
 nogtech-etl-airflow/
