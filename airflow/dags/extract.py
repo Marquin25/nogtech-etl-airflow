@@ -13,9 +13,10 @@ def extract():
     )
 
     transacoes["mes_referencia"] = pd.to_datetime(
-        transacoes["data_transacao"],
-        dayfirst=True
-    ).dt.strftime("%Y-%m")
+    transacoes["data_transacao"],
+    format="mixed",
+    dayfirst=True
+).dt.strftime("%Y-%m")
 
     engajamento["mes_referencia"] = engajamento["mes_referencia"].astype(str)
 
