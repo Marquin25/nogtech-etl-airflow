@@ -1,4 +1,4 @@
-]import pandas as pd
+import pandas as pd
 from sqlalchemy import create_engine
 
 def load():
@@ -9,8 +9,6 @@ def load():
         "postgresql+psycopg2://airflow:airflow@postgres:5432/nogtech"
     )
 
-    # Idempotência: apaga registros do mesmo lote antes de inserir
-    # Estratégia: particionamento por data_transacao com overwrite
     with engine.connect() as conn:
         if not df.empty:
             datas = df["data_transacao"].unique().tolist()
