@@ -15,6 +15,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+
   airflow:
     image: apache/airflow:2.9.1
     container_name: airflow_nogtech
@@ -38,7 +39,9 @@ services:
     command: bash -c "airflow standalone"
 
   superset:
-    image: apache/superset:latest
+    build:
+      context: ./superset
+
     container_name: superset_nogtech
 
     depends_on:
