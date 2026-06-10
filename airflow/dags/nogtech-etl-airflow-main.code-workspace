@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "../../../nogtech-etl-airflow-main"
+		},
+		{
+			"path": "../.."
+		}
+	],
+	"settings": {}
+}
