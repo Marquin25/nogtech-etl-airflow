@@ -332,9 +332,9 @@ Projeto desenvolvido para a disciplina de **Big Data**, demonstrando a utilizaç
 
 ## Autor
 
-**Marcus Antônio Rodrigues Monteiro Rios de Pina**
-**Theo Jose Luna Leal**
-**João Victor Marinho**
+- Marcus Antônio Rodrigues Monteiro Rios de Pina
+- Theo Jose Luna Leal
+- João Victor Marinho
 
 GitHub: https://github.com/Marquin25
 
